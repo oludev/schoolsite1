@@ -28,7 +28,7 @@ try {
       ('First Term Examinations','Both', DATE_SUB(CURDATE(), INTERVAL 120 DAY), DATE_SUB(CURDATE(), INTERVAL 110 DAY), 'Results released to the e-portal.'),
       ('Second Term Examinations','Both', DATE_SUB(CURDATE(), INTERVAL 60 DAY), DATE_SUB(CURDATE(), INTERVAL 50 DAY), 'Results released to the e-portal.'),
       ('Third Term Examinations','Both', DATE_ADD(CURDATE(), INTERVAL 20 DAY), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 'Timetable is on the e-portal.')");
-    $r = $pdo->prepare('INSERT INTO results (student_id,session_id,subject,ca,exam,score,grade,remark,teacher_id,class_name) VALUES (?,?,?,?,?,?,?,?,?,'JSS 1')');
+    $r = $pdo->prepare("INSERT INTO results (student_id,session_id,subject,ca,exam,score,grade,remark,teacher_id,class_name) VALUES (?,?,?,?,?,?,?,?,?,'JSS 1')");
     $data = [[$s1, 1, 'Mathematics', 52], [$s1, 1, 'English', 61], [$s1, 1, 'Basic Science and Technology', 44], [$s1, 2, 'Mathematics', 63], [$s1, 2, 'English', 66], [$s1, 2, 'Basic Science and Technology', 58],
              [$s2, 1, 'Mathematics', 74], [$s2, 1, 'English', 70], [$s2, 1, 'Basic Science and Technology', 68], [$s2, 2, 'Mathematics', 71], [$s2, 2, 'English', 77], [$s2, 2, 'Basic Science and Technology', 72]];
     foreach ($data as [$sid, $ses, $sub, $sc]) { [$g, $rm] = grade_for($sc); $ca = (int)round($sc * 0.4); $r->execute([$sid, $ses, $sub, $ca, $sc - $ca, $sc, $g, $rm, $t]); }

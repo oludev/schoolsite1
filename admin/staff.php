@@ -1,0 +1,15 @@
+<?php require '_menu.php'; require_perm('staff'); $id = (int)($_GET['id'] ?? 0);
+$F = ['staff_no' => 'Staff number', 'position' => 'Position', 'department' => 'Department', 'qualification' => 'Qualification', 'phone' => 'Phone', 'address' => 'Address', 'hired_on' => 'Date joined', 'basic_salary' => 'Basic monthly salary', 'allowances' => 'Monthly allowances', 'bank_name' => 'Bank', 'account_no' => 'Account number', 'emergency_contact' => 'Emergency contact (name and phone)'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) { csrf_check(); $v = [];
+    foreach ($F as $k => $l) { $x = trim($_POST[$k] ?? ''); $v[] = ($k === 'hired_on') ? ($x ?: null) : (in_array($k, ['basic_salary', 'allowances'], true) ? max(0, (float)$x) : $x); }
+    q('INSERT INTO staff_profiles (user_id,' . implode(',', array_keys($F)) . ') VALUES (?' . str_repeat(',?', count($F)) . ') ON DUPLICATE KEY UPDATE ' . implode(',', array_map(fn($k) => "$k=VALUES($k)", array_keys($F))), [$id, ...$v]);
+    audit('staff_record_saved', 'user ' . $id); flash('Staff record saved.'); go('admin/staff.php'); }
+if ($id) { $s = q("SELECT u.full_name,u.role,p.* FROM users u LEFT JOIN staff_profiles p ON p.user_id=u.id WHERE u.id=? AND u.role IN ('teacher','principal','hr')", [$id])->fetch(); if (!$s) go('admin/staff.php');
+    app_top('Staff record', $menu, $area); ?><h1><?= e($s['full_name']) ?></h1><p><a href="staff.php">Back to staff</a></p>
+<form method="post" class="panel f" style="max-width:none"><?= csrf_field() ?><div class="row">
+<?php $i = 0; foreach ($F as $k => $l): $t = $k === 'hired_on' ? 'date' : (in_array($k, ['basic_salary', 'allowances']) ? 'number" step="0.01" min="0' : 'text'); ?><div><label><?= e($l) ?></label><input type="<?= $t ?>" name="<?= $k ?>" value="<?= e($s[$k] ?? '') ?>"></div><?php endforeach; ?></div>
+<p class="mini">Salary and bank details are visible only to Admin and HR.</p><div><button class="btn">Save record</button></div></form><?php app_bottom(); exit; }
+$rows = q("SELECT u.id,u.full_name,u.role,u.active,p.staff_no,p.position,p.basic_salary FROM users u LEFT JOIN staff_profiles p ON p.user_id=u.id WHERE u.role IN ('teacher','principal','hr') ORDER BY u.full_name")->fetchAll();
+app_top('Staff & HR', $menu, $area); ?><h1>Staff & HR</h1><p class="mini">Staff accounts are created under Accounts & roles. Open a person to add their HR record and salary.</p>
+<div class="tw scroll"><table><thead><tr><th>Name</th><th>Role</th><th>Staff no</th><th>Position</th><th>Basic salary</th><th>Status</th><th></th></tr></thead><tbody>
+<?php foreach ($rows as $r) echo '<tr><td>' . e($r['full_name']) . '</td><td>' . e(ucfirst($r['role'])) . '</td><td>' . e($r['staff_no']) . '</td><td>' . e($r['position']) . '</td><td>' . ($r['basic_salary'] ? money($r['basic_salary']) : '<span class="low">Not set</span>') . '</td><td>' . ($r['active'] ? 'Active' : 'Disabled') . '</td><td><a href="staff.php?id=' . $r['id'] . '">Open record</a></td></tr>'; if (!$rows) echo '<tr><td colspan="7">No staff accounts yet.</td></tr>'; ?></tbody></table></div><?php app_bottom();

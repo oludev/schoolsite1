@@ -1,0 +1,5 @@
+<?php require '_menu.php'; if ($u['role'] !== 'teacher') go('portal/index.php');
+$cl = $_GET['class'] ?? ''; $rows = $cl ? q("SELECT u.*, p.admission_no, p.guardian_phone FROM users u LEFT JOIN student_profiles p ON p.user_id=u.id WHERE u.role='student' AND u.active=1 AND u.class_name=? ORDER BY u.full_name", [$cl])->fetchAll() : [];
+app_top('Student records', $menu, $area); ?>
+<h1>Student records</h1><form method="get" class="f" style="max-width:340px;margin-bottom:20px"><div><label>Class</label><select name="class" onchange="this.form.submit()"><option value="">Choose a class</option><?= options(array_combine(class_list(), class_list()), $cl) ?></select></div></form>
+<?php if ($cl): ?><div class="tw scroll"><table><thead><tr><th>Name</th><th>Admission no</th><th>Guardian phone</th><th></th></tr></thead><tbody><?php foreach ($rows as $s) echo '<tr><td>' . e($s['full_name']) . '</td><td>' . e($s['admission_no']) . '</td><td>' . e($s['guardian_phone']) . '</td><td><a href="student.php?id=' . $s['id'] . '">Open record</a></td></tr>'; ?></tbody></table></div><?php endif; app_bottom();

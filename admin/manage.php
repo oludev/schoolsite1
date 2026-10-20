@@ -5,6 +5,7 @@ $T = [
  'exams' => ['Exam sessions', 'exam_sessions', [['title', 'text', 'Title (e.g. First Term Exams 2026)'], ['section', 'select', 'Section', ['Both', 'Primary', 'Secondary']], ['start_date', 'date', 'Start date'], ['end_date', 'date', 'End date'], ['notes', 'textarea', 'Notes']], ['title', 'section', 'start_date'], 'start_date DESC'],
  'gallery' => ['Gallery photos', 'gallery', [['caption', 'text', 'Caption'], ['album', 'text', 'Album (e.g. Sports Day. Use "Home Page" to show the photo on the home page)'], ['image', 'file', 'Photo']], ['caption', 'album', 'image'], 'id DESC'],
  'activities' => ['Activities', 'activities', [['name', 'text', 'Activity name'], ['description', 'textarea', 'Description'], ['image', 'file', 'Image (optional)']], ['name'], 'name'],
+ 'testimonials' => ['Parent testimonials', 'testimonials', [['parent_name', 'text', 'Parent name (for example Mrs. Adeyemi)'], ['role_line', 'text', 'Line under the name (for example Parent of a JSS 2 student)'], ['quote', 'textarea', 'What the parent said'], ['image', 'file', 'Photo (optional)']], ['parent_name', 'role_line'], 'id DESC'],
  'faqs' => ['FAQs', 'faqs', [['question', 'text', 'Question'], ['answer', 'textarea', 'Answer'], ['sort_order', 'number', 'Order (1 shows first)']], ['question', 'sort_order'], 'sort_order, id'],
 ];
 $t = $_GET['t'] ?? 'posts'; if (!isset($T[$t])) go('admin/index.php');

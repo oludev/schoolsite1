@@ -54,7 +54,7 @@ textarea{min-height:110px}
 .note{padding:12px 16px;border-radius:8px;margin-bottom:18px}.note.ok{background:#DDF1E6;color:var(--ok)}.note.err{background:#F6DADA;color:var(--bad)}
 table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.95rem}
 th{background:var(--blush);color:var(--wine-d)}.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-.gal{columns:3 240px;column-gap:16px}.gal figure{margin:0 0 16px;break-inside:avoid}.gal img{border-radius:10px;width:100%}.gal figcaption{font-size:.9rem;color:var(--mute);padding-top:4px}
+.gal{columns:3 240px;column-gap:16px}.gal figure{margin:0 0 16px;break-inside:avoid}.gal img{border-radius:10px;width:100%;}.gal figcaption{font-size:.9rem;color:var(--mute);padding-top:4px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}.chips a{padding:6px 14px;border:1px solid var(--line);border-radius:99px;text-decoration:none;font-size:.92rem}.chips a.on{background:var(--wine);color:#fff;border-color:var(--wine)}
 .foot{background:var(--wine-d);color:#EBD3D8;padding-top:48px}.foot a{display:block;color:#EBD3D8;text-decoration:none;padding:3px 0}.foot a:hover{color:#fff}
 .foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}.foot strong{color:#fff;display:block;margin-bottom:8px}.fname{font:700 1.2rem var(--serif)}
@@ -71,6 +71,37 @@ th{background:var(--blush);color:var(--wine-d)}.tw{overflow-x:auto;border:1px so
 .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}.stat b{display:block;font:700 2rem var(--serif);color:var(--wine)}
 .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:24px}
 .acts{display:flex;gap:6px;flex-wrap:wrap}
+/* HTML: <div class="squircle"></div> */
+.squircle, .squircle-2, .squircle-3, .squircle-4 {
+    display: flex;
+    gap: 6px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  --r: 50%; /* between 0% [square] and 50% [squircle] (you can use pixel as well) */
+  
+  --_r: clamp(0%,var(--r)/2,25%);
+  --_v: calc(var(--_r)*(1 - sqrt(2)/4));
+  --_p: calc(var(--_v) - var(--_r)/2);
+  clip-path: shape(
+    from var(--_v) var(--_p),
+    curve to 50% 0 with var(--_r) 0,
+    curve to calc(100% - var(--_v)) var(--_p) with calc(100% - var(--_r)) 0,
+    curve to calc(100% - var(--_p)) var(--_v) with calc(100% - 2*var(--_p)) calc(2*var(--_p)),
+    curve to 100% 50% with 100% var(--_r),
+    curve to calc(100% - var(--_p)) calc(100% - var(--_v)) with 100% calc(100% - var(--_r)),
+    curve to calc(100% - var(--_v)) calc(100% - var(--_p)) with calc(100% - 2*var(--_p)) calc(100% - 2*var(--_p)),
+    curve to 50% 100% with calc(100% - var(--_r)) 100%,
+    curve to var(--_v) calc(100% - var(--_p)) with var(--_r) 100%,
+    curve to var(--_p) calc(100% - var(--_v)) with calc(2*var(--_p)) calc(100% - 2*var(--_p)),
+    curve to 0 50% with 0 calc(100% - var(--_r)),
+    curve to var(--_p) var(--_v) with 0 var(--_r),
+    curve to var(--_v) var(--_p) with calc(2*var(--_p)) calc(2*var(--_p))
+  );
+  width: 250px;
+  aspect-ratio: 1;
+  background: #8458ff;
+}
 @media(max-width:860px){
  .burger{display:block}.nav{display:none;position:absolute;left:0;right:0;top:68px;background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;flex-direction:column;align-items:stretch}
  body.nav-open .nav{display:flex}.hero .wrap,.split,.row,.foot .cols{grid-template-columns:1fr}
@@ -110,3 +141,93 @@ th{background:var(--blush);color:var(--wine-d)}.tw{overflow-x:auto;border:1px so
 @media(max-width:1000px){.slide::after{background:linear-gradient(180deg,rgba(74,18,32,.55),rgba(74,18,32,.92))}.slide .copy{max-width:none}
  .banner-card{position:static;transform:none;width:auto;border-radius:0}.slides{height:clamp(440px,72vh,600px)}}
 @media(prefers-reduced-motion:reduce){.slide{transition:none}}
+
+/* ===== squircle design system: same shape as the .squircle block above, used site-wide ===== */
+@property --r{syntax:"<percentage>";inherits:false;initial-value:50%}
+.crest,.date .d,.gal img,.pagehead::after,.ticks li::before,.fx-chip{
+  --r:50%;--_r:clamp(0%,var(--r)/2,25%);--_v:calc(var(--_r)*(1 - sqrt(2)/4));--_p:calc(var(--_v) - var(--_r)/2);
+  border-radius:0;
+  clip-path:shape(
+    from var(--_v) var(--_p),
+    curve to 50% 0 with var(--_r) 0,
+    curve to calc(100% - var(--_v)) var(--_p) with calc(100% - var(--_r)) 0,
+    curve to calc(100% - var(--_p)) var(--_v) with calc(100% - 2*var(--_p)) calc(2*var(--_p)),
+    curve to 100% 50% with 100% var(--_r),
+    curve to calc(100% - var(--_p)) calc(100% - var(--_v)) with 100% calc(100% - var(--_r)),
+    curve to calc(100% - var(--_v)) calc(100% - var(--_p)) with calc(100% - 2*var(--_p)) calc(100% - 2*var(--_p)),
+    curve to 50% 100% with calc(100% - var(--_r)) 100%,
+    curve to var(--_v) calc(100% - var(--_p)) with var(--_r) 100%,
+    curve to var(--_p) calc(100% - var(--_v)) with calc(2*var(--_p)) calc(100% - 2*var(--_p)),
+    curve to 0 50% with 0 calc(100% - var(--_r)),
+    curve to var(--_p) var(--_v) with 0 var(--_r),
+    curve to var(--_v) var(--_p) with calc(2*var(--_p)) calc(2*var(--_p))
+  );
+}
+.crest{--r:44%}.date .d{--r:34%}.gal img{--r:16%}.ticks li::before{--r:46%}
+@supports not (clip-path: shape(from 0 0, line to 10px 10px)){
+  .crest,.date .d,.gal img,.pagehead::after,.ticks li::before,.fx-chip,.squircle{clip-path:none;border-radius:calc(var(--r)*.6)}
+}
+/* inner-page headers get a soft squircle watermark */
+.pagehead{position:relative;overflow:hidden}.pagehead .wrap{position:relative;z-index:1}
+.pagehead::after{content:"";position:absolute;right:max(20px,calc((100vw - 1120px)/2 + 20px));top:50%;width:170px;aspect-ratio:1;background:var(--wine);opacity:.09;translate:0 -50%;rotate:14deg}
+/* facts band under the banner */
+.fx-band{background:var(--blush);border-bottom:1px solid var(--line);padding:68px 0}
+.fx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.fx{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.fx-chip{width:70px;height:70px;background:var(--wine);color:#fff;display:grid;place-items:center;margin-bottom:8px}
+.fx-n{font:700 clamp(2.8rem,6vw,4.6rem)/1 var(--serif);color:var(--wine);letter-spacing:-.02em}
+.fx-l{font-size:1.02rem;color:var(--mute);max-width:16ch}
+.js-reveal .fx{opacity:0}
+.js-reveal .fx.in{opacity:1;animation:fxin .85s cubic-bezier(.34,1.56,.64,1) var(--d,0s) backwards}
+.js-reveal .fx.in .fx-chip{animation:fxpulse 3.4s ease-in-out 1.2s infinite}
+@keyframes fxin{from{opacity:0;translate:0 44px;scale:.85}to{opacity:1;translate:0 0;scale:1}}
+@keyframes fxpulse{0%,100%{scale:1;rotate:0deg}50%{scale:1.12;rotate:6deg}}
+/* welcome: picture + text */
+.welcome .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.w-text h2{font-size:clamp(1.9rem,3.6vw,2.7rem)}.lead{font-size:1.15rem;color:var(--mute)}
+.ticks{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:12px}.ticks li{position:relative;padding-left:38px}
+.ticks li::before{content:"";position:absolute;left:0;top:.12em;width:26px;height:26px;background:var(--wine) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E") center/14px no-repeat}
+.w-pic{position:relative;padding:0 0 26px}
+.w-pic .squircle.w-frame{display:block;width:100%;margin:0;aspect-ratio:1;background:linear-gradient(160deg,var(--wine-l),var(--wine-d))}
+.w-frame img{width:100%;height:100%;object-fit:cover;animation:kb 20s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.14) translate(-2%,-2%)}}
+.badge{position:absolute;z-index:2;background:#fff;border-radius:14px;padding:12px 18px;border-left:5px solid var(--wine);box-shadow:0 14px 30px rgba(74,18,32,.22);animation:float 6s ease-in-out infinite}
+.badge b{display:block;font:700 1.6rem/1.1 var(--serif);color:var(--wine)}.badge span{font-size:.85rem;color:var(--mute)}
+.badge.b1{left:-14px;bottom:60px}.badge.b2{right:0;top:28px;animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.js-reveal .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.js-reveal .reveal.in{opacity:1;transform:none}
+/* six squircles, three per row (flex) */
+.sq-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:32px}
+.sq-grid .squircle{width:calc((100% - 56px)/3);flex:0 0 auto;margin:0;flex-wrap:nowrap;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:13%;color:#fff;position:relative;overflow:hidden;aspect-ratio:1;transition:scale .35s ease}
+.sq-grid .squircle:hover{scale:1.05}
+.sq-grid .c1{background:var(--wine)}.sq-grid .c2{background:var(--wine-d)}.sq-grid .c3{background:var(--wine-l)}.sq-grid .c4{background:var(--blush);color:var(--wine-d)}
+.sq-grid h3{color:inherit;font-size:1.2rem;margin:0}.sq-grid p{margin:0;font-size:.95rem;color:inherit;opacity:.9}.sq-grid .c4 .sq-ic{color:var(--wine)}
+.sq-grid .has-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sq-grid .has-img .sq-txt{position:absolute;inset:auto 0 0 0;padding:70px 12% 13%;background:linear-gradient(transparent,rgba(74,18,32,.92) 60%);color:#fff}
+.js-reveal .sqt{opacity:0}
+.js-reveal .sqt.in{opacity:1;animation:sqin .9s cubic-bezier(.25,.46,.45,.94) var(--d,0s) backwards,sqfloat 7s ease-in-out calc(var(--d,0s) + .9s) infinite,sqmorph 10s ease-in-out calc(var(--d,0s) + .9s) infinite}
+@keyframes sqin{from{scale:.5;opacity:0;rotate:-8deg}to{scale:1;opacity:1;rotate:0deg}}
+@keyframes sqfloat{0%,100%{translate:0 0}50%{translate:0 -12px}}
+@keyframes sqmorph{0%,100%{--r:50%}50%{--r:32%}}
+/* parents' testimonials carousel */
+.testi{position:relative;overflow:hidden;background:var(--wine-d);color:#fff;text-align:center}
+.testi h2{color:#fff}.testi .wrap{position:relative;z-index:1}
+.testi .squircle.t-deco{position:absolute;margin:0;width:300px;aspect-ratio:1;background:rgba(255,255,255,.05);--r:46%}
+.testi .t-deco.d1{left:-90px;top:-80px}.testi .t-deco.d2{right:-100px;bottom:-110px;width:380px}
+.tcar{position:relative;max-width:860px;margin:34px auto 0;padding:0 64px}
+.tslides{display:grid}
+.tslide{grid-area:1/1;margin:0;display:flex;flex-direction:column;align-items:center;gap:20px;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
+.tslide.on{opacity:1;visibility:visible}
+.t-photo{width:116px;height:116px;border-radius:50%;overflow:hidden;border:4px solid #fff;background:var(--wine);display:grid;place-items:center;font:700 2.6rem var(--serif);color:#fff;box-shadow:0 0 0 9px rgba(255,255,255,.12)}
+.t-photo img{width:100%;height:100%;object-fit:cover}
+.tslide blockquote{margin:0;font:500 clamp(1.15rem,2.5vw,1.65rem)/1.5 var(--serif);color:#fff;max-width:none}
+.tslide blockquote::before{content:"\201C"}.tslide blockquote::after{content:"\201D"}
+.tslide figcaption b{display:block;color:#fff;font-size:1.1rem}.tslide figcaption span{color:#EBD3D8;font-size:.95rem}
+.tnav{position:absolute;top:50%;translate:0 -50%;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;z-index:2}
+.tnav:hover{background:rgba(255,255,255,.16)}.tnav.prev{left:0}.tnav.next{right:0}
+@media(max-width:900px){.fx-grid{grid-template-columns:repeat(2,1fr)}.welcome .wrap{grid-template-columns:1fr;gap:40px}.sq-grid .squircle{width:calc((100% - 28px)/2)}.badge.b1{left:6px}}
+@media(max-width:560px){.sq-grid .squircle{width:min(100%,340px)}.tcar{padding:0 44px}.tnav{width:38px;height:38px}}
+@media(prefers-reduced-motion:reduce){.js-reveal .reveal,.js-reveal .fx,.js-reveal .sqt{opacity:1;transform:none;transition:none}.js-reveal .fx.in,.js-reveal .fx.in .fx-chip,.js-reveal .sqt.in,.w-frame img,.badge{animation:none}.tslide{transition:none}}
+/* score-entry boxes in the e-portal */
+.srow input[type=number],.tw td input[type=number]{width:92px}.sum{font-weight:700;color:var(--wine)}.over{color:var(--bad)!important}

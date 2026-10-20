@@ -7,4 +7,10 @@
   <h2>Admission window</h2><p><?= e($msg) ?></p>
   <?php if (setting('apply_open')): ?><p>Opens: <strong><?= date('j F Y', strtotime(setting('apply_open'))) ?></strong><br>Closes: <strong><?= date('j F Y', strtotime(setting('apply_close'))) ?></strong></p><?php endif; ?>
   <?php if ($st === 'open'): ?><a class="btn" href="<?= url('apply.php') ?>">Apply now</a><?php else: ?><a class="btn ghost" href="<?= url('contact.php') ?>">Ask about the next intake</a><?php endif; ?></div></div></section>
-<?php require 'includes/footer.php'; ?>
+  <section>
+    <div class="squircle" >
+     <div class="squircle-2"  >
+       <div class="squircle-3"  >
+         <div class="squircle-4"  >
+          </section>
+    <?php require 'includes/footer.php'; ?>

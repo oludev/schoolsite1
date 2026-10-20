@@ -113,3 +113,7 @@ CREATE TABLE IF NOT EXISTS term_records (
   height_cm DECIMAL(5,1) NULL, weight_kg DECIMAL(5,1) NULL, physical_rating VARCHAR(30), sports VARCHAR(300), clubs VARCHAR(300),
   PRIMARY KEY (student_id, session_id)
 );
+CREATE TABLE IF NOT EXISTS testimonials (
+  id INT AUTO_INCREMENT PRIMARY KEY, parent_name VARCHAR(120) NOT NULL, role_line VARCHAR(160), quote TEXT NOT NULL, image VARCHAR(200),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS settings (k VARCHAR(60) PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  role ENUM('admin','principal','hr','teacher','student') NOT NULL,
+  role ENUM('admin','principal','hr','teacher','student','parent') NOT NULL,
   full_name VARCHAR(120) NOT NULL,
   username VARCHAR(60) NOT NULL UNIQUE,
   email VARCHAR(120) NULL,
@@ -116,4 +116,9 @@ CREATE TABLE IF NOT EXISTS term_records (
 CREATE TABLE IF NOT EXISTS testimonials (
   id INT AUTO_INCREMENT PRIMARY KEY, parent_name VARCHAR(120) NOT NULL, role_line VARCHAR(160), quote TEXT NOT NULL, image VARCHAR(200),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS parent_children (
+  parent_id INT NOT NULL, student_id INT NOT NULL, PRIMARY KEY (parent_id, student_id),
+  FOREIGN KEY (parent_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
 );

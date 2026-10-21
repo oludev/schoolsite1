@@ -12,7 +12,7 @@ if ($st === 'open' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $done = $ref;
     }
 }
-$classes = CLASSES;
+$classes = array_merge(['Nursery 1', 'Nursery 2'], CLASSES);
 ?>
 <div class="pagehead"><div class="wrap"><h1>Apply now</h1><p><?= e($msg) ?></p></div></div>
 <section class="s"><div class="wrap">

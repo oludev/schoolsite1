@@ -7,5 +7,5 @@ $rows = q("SELECT s.*, COUNT(DISTINCT r.student_id) cands, ROUND(AVG(r.score),1)
 <td><?= $r['start_date'] ? date('j M', strtotime($r['start_date'])) . ' to ' . date('j M Y', strtotime($r['end_date'] ?: $r['start_date'])) : '' ?></td>
 <td><?= (int)$r['cands'] ?: '-' ?></td><td><?= $r['avg_score'] !== null ? e($r['avg_score']) . '%' : '-' ?></td><td><?= $r['pass_rate'] !== null ? e($r['pass_rate']) . '%' : '-' ?></td></tr>
 <?php endforeach; if (!$rows) echo '<tr><td colspan="6">No exam records published yet.</td></tr>'; ?></tbody></table></div>
-<p style="margin-top:20px"><a class="btn" href="<?= url('portal/login.php') ?>">Check my results in the e-portal</a></p></div></section>
+<p style="margin-top:20px"><a class="btn" href="<?= url('login.php') ?>">Check my results in the e-portal</a></p></div></section>
 <?php require 'includes/footer.php'; ?>

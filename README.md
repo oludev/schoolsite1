@@ -32,3 +32,6 @@ Change every demo password. New accounts must choose their own password at first
 - **Staff, HR and payroll:** staff records with salary and bank details, monthly payroll generation with pension/tax rates, bonus and deduction edits, mark as paid, bank list CSV, printable payslips visible to staff once paid, leave requests and approvals.
 - **Digital notice board:** post to the public site, all logged-in users, teachers only, or students (all or one class). Pin and expire notices. Teachers can post to their classes.
 - **Security:** role-based permissions on every page, hashed passwords, CSRF tokens, prepared SQL, forced password change for new and reset accounts, lockout after 6 failed logins in 15 minutes, 30-minute inactivity logout, audit log of sensitive actions, secure session cookies, blocked PHP execution in `uploads/`. Use HTTPS in production.
+
+## One login page
+Everyone signs in at `/login.php`. Admin, principal and HR go to the admin area. Teachers, students and parents go to the e-portal. Parent accounts are created under Accounts & roles and linked to their children by the children's usernames.

@@ -36,7 +36,7 @@ function require_role(array $roles, string $login): array {
     if (time() - ($_SESSION['last'] ?? time()) > 1800) { audit('timeout'); unset($_SESSION['user']); flash('You were logged out after 30 minutes of inactivity.', 'err'); go($login); }
     $_SESSION['last'] = time();
     if (!empty($u['must_change']) && !in_array(basename($_SERVER['SCRIPT_NAME']), ['password.php', 'logout.php'], true))
-        go(in_array($u['role'], ['teacher', 'student'], true) ? 'portal/password.php' : 'admin/password.php');
+        go(in_array($u['role'], ['teacher', 'student', 'parent'], true) ? 'portal/password.php' : 'admin/password.php');
     return $u;
 }
 const PERMS = [
@@ -152,4 +152,34 @@ function save_score(int $stu, int $sid, string $subject, float $ca, float $exam,
     $tot = $ca + $exam; [$g, $rm] = grade_for($tot); $cl = q('SELECT class_name FROM users WHERE id=?', [$stu])->fetchColumn();
     q('INSERT INTO results (student_id,session_id,subject,ca,exam,score,grade,remark,teacher_id,class_name) VALUES (?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ca=VALUES(ca),exam=VALUES(exam),score=VALUES(score),grade=VALUES(grade),remark=VALUES(remark),teacher_id=VALUES(teacher_id)',
       [$stu, $sid, $subject, $ca, $exam, $tot, $g, $rm, $teacher, $cl]);
+}
+
+function children_of(int $pid): array {
+    return q("SELECT u.id,u.full_name,u.class_name FROM parent_children pc JOIN users u ON u.id=pc.student_id WHERE pc.parent_id=? AND u.role='student' ORDER BY u.full_name", [$pid])->fetchAll();
+}
+function student_info(int $id): ?array { return q("SELECT id,full_name,class_name FROM users WHERE id=? AND role='student'", [$id])->fetch() ?: null; }
+/* Which student's data is being viewed: a student sees themselves, a parent sees one of their own linked children, a teacher picks with ?student= */
+function acting_student(array $u): int {
+    if ($u['role'] === 'student') return (int)$u['id'];
+    $want = (int)($_GET['student'] ?? 0);
+    if ($u['role'] === 'parent') {
+        $ids = array_map('intval', array_column(children_of((int)$u['id']), 'id')); if (!$ids) return 0;
+        if (!$want) $want = (int)($_SESSION['child'] ?? 0);
+        $c = in_array($want, $ids, true) ? $want : $ids[0]; $_SESSION['child'] = $c; return $c;
+    }
+    return $want;
+}
+function child_switcher(array $u, int $stu): string {
+    if ($u['role'] !== 'parent') return ''; $k = children_of((int)$u['id']); if (count($k) < 2) return '';
+    return '<form method="get" class="noprint" style="margin:0 0 16px"><label class="mini">Viewing</label><select name="student" onchange="this.form.submit()" style="max-width:320px">' . options(array_column($k, 'full_name', 'id'), $stu) . '</select></form>';
+}
+function notice_user(array $u): array { if ($u['role'] !== 'parent') return $u; $c = student_info(acting_student($u)); return ['role' => 'student', 'class_name' => $c['class_name'] ?? '']; }
+function link_children(int $pid, string $csv): int {
+    if (!q("SELECT 1 FROM users WHERE id=? AND role='parent'", [$pid])->fetch()) return 0;
+    q('DELETE FROM parent_children WHERE parent_id=?', [$pid]); $n = 0;
+    foreach (array_filter(array_map('trim', explode(',', $csv))) as $un) {
+        $s = q("SELECT id FROM users WHERE username=? AND role='student'", [$un])->fetchColumn();
+        if ($s) $n += q('INSERT IGNORE INTO parent_children (parent_id,student_id) VALUES (?,?)', [$pid, (int)$s])->rowCount();
+    }
+    return $n;
 }

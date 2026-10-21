@@ -71,8 +71,8 @@ $facts = [['book', (string)count(CLASSES), 'Classes, from Primary 1 to SS 3'], [
   </div>
   <div class="w-pic reveal" style="transition-delay:.15s">
     <div class="squircle w-frame"><img src="<?= e($wpic) ?>" alt="A teacher and pupils learning together in class" loading="lazy"></div>
-    <div class="badge b1"><b><?= e(setting('stat_years', '25+')) ?></b><span>years of teaching</span></div>
-    <div class="badge b2"><b><?= e(setting('stat_ratio', '1 : 20')) ?></b><span>teacher to pupil ratio</span></div>
+    <div class="badge b1"><b><?= e(setting('stat_years', '25+')) ?></b><span>Years of teaching</span></div>
+    <div class="badge b2"><b><?= e(setting('stat_age', '5-16')) ?></b><span>Target age group</span></div>
   </div>
 </div></section>
 <?php $ph = q("SELECT * FROM gallery WHERE album='Home Page' ORDER BY id DESC LIMIT 6")->fetchAll();

@@ -11,5 +11,5 @@ app_top('Notice board', $menu, $area); ?>
 <?php if ($u['role'] === 'teacher'): ?><form method="post" class="panel f"><?= csrf_field() ?><h3>Post a notice to a class</h3>
 <div class="row"><div><label>Title</label><input name="title" required></div><div><label>Class</label><select name="class" required><option value="">Choose</option><?= options(array_combine(class_list(), class_list())) ?></select></div></div>
 <div><label>Message</label><textarea name="body"></textarea></div><div><label>Hide after (optional)</label><input type="date" name="expires" style="max-width:220px"></div><div><button class="btn">Post notice</button></div></form><?php endif; ?>
-<?= notice_cards(visible_notices($u), fn($n) => ($u['role'] === 'teacher' && $n['posted_by'] == $u['id']) ? '<form method="post" style="margin-top:8px" onsubmit="return confirm(\'Remove this notice?\')">' . csrf_field() . '<button class="btn small danger" name="delete" value="' . $n['id'] . '">Remove</button></form>' : '') ?>
+<?= notice_cards(visible_notices(notice_user($u)), fn($n) => ($u['role'] === 'teacher' && $n['posted_by'] == $u['id']) ? '<form method="post" style="margin-top:8px" onsubmit="return confirm(\'Remove this notice?\')">' . csrf_field() . '<button class="btn small danger" name="delete" value="' . $n['id'] . '">Remove</button></form>' : '') ?>
 <?php app_bottom();

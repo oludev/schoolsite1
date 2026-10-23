@@ -1,6 +1,6 @@
 <?php require '_menu.php'; require_perm('settings');
 $keys = ['school_name' => 'School name', 'motto' => 'Motto', 'address' => 'Address', 'phone' => 'Phone', 'email' => 'Email', 'hero_title' => 'Homepage headline', 'hero_text' => 'Homepage intro',
-  'about_story' => 'Our story (About page)', 'mission' => 'Mission', 'vision' => 'Vision', 'stat_ratio' => 'Homepage fact: teacher ratio', 'stat_years' => 'Homepage fact: years of teaching', 'stat_pass' => 'Homepage fact: pass rate', 'ca_max' => 'Highest continuous assessment (CA) score. Default 40', 'exam_max' => 'Highest exam score. Default 60'];
+  'about_story' => 'Our story (About page)', 'mission' => 'Mission', 'vision' => 'Vision', 'stat_ratio' => 'Homepage fact: number of students', 'stat_years' => 'Homepage fact: years of teaching', 'stat_pass' => 'Homepage fact: pass rate', 'ca_max' => 'Highest continuous assessment (CA) score. Default 40', 'exam_max' => 'Highest exam score. Default 60'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { csrf_check();
     if (isset($_POST['pw'])) {
         $me = q('SELECT password_hash FROM users WHERE id=?', [$u['id']])->fetchColumn();

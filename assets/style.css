@@ -394,3 +394,51 @@ summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--gold-700)}
   .utility .u-hide{display:none}.fcols{grid-template-columns:1fr 1fr}
 }
 @media(max-width:560px){.fcols{grid-template-columns:1fr}}
+/* ===== v6: menu text size, squircle badges, application page and payment window ===== */
+.m-item>a,.sub a{font-size:17px}
+/* only the welcome squircle (picture and its two badges) moves; everything else stays still */
+@media (prefers-reduced-motion:no-preference){
+  .w-frame img{animation:kb 22s ease-in-out infinite alternate}
+  .badge{animation:float 6s ease-in-out infinite}.badge.b2{animation-delay:-3s}
+}
+.apply-grid{display:grid;grid-template-columns:1.45fr .85fr;gap:48px;align-items:start}
+.apply-card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:var(--r-md);box-shadow:var(--sh-1);padding:clamp(22px,3vw,36px)}
+.apply-card h2{font-size:1.7rem}
+.fee-box{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--navy-50);border:1px dashed var(--navy-500);border-radius:12px;padding:14px 18px;margin:18px 0 22px}
+.fee-box span{font-weight:600;color:var(--text-soft)}.fee-box strong{font:700 1.9rem var(--serif);color:var(--navy)}
+.resume{margin-top:22px}
+.apply-pic{position:sticky;top:110px}
+.apply-pic .squircle.ap-glass{display:block;width:100%;margin:0 0 26px;aspect-ratio:1;padding:14px;--r:44%;background:linear-gradient(135deg,var(--gold),var(--navy) 70%)}
+.apply-pic .squircle.ap-photo{display:block;width:100%;height:100%;margin:0;aspect-ratio:auto;--r:44%;overflow:hidden;background:var(--navy)}
+.ap-photo img{width:100%;height:100%;object-fit:cover}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:center;font-weight:500}
+.steps li::before{content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-weight:700}
+.afm{display:grid;gap:16px;margin-top:18px}
+.afm h3{margin:14px 0 0;padding-bottom:8px;border-bottom:3px solid var(--gold);font-size:1.25rem}
+.chk{display:flex;gap:10px;align-items:flex-start;font-weight:500}.chk input{width:auto;margin-top:6px}
+#sigpad{display:block;width:100%;height:auto;aspect-ratio:640/180;border:2px dashed var(--navy-500);border-radius:12px;background:#fff;touch-action:none;cursor:crosshair;margin-bottom:8px}
+.pp{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}.pp>div{flex:1 1 260px}
+#pp-prev{width:110px;height:140px;object-fit:cover;border:2px solid var(--navy);border-radius:8px}#pp-prev[hidden]{display:none}
+body.modal-open{overflow:hidden}
+.pay-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(11,31,51,.72)}
+.pay-modal[hidden]{display:none}
+.pay-box{position:relative;width:min(660px,100%);max-height:92vh;overflow-y:auto;background:#fff;border-radius:24px;border-top:6px solid var(--gold);padding:30px;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.pay-box h2{font-size:1.6rem;margin-bottom:.2em}
+.pay-x{position:absolute;top:12px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:var(--navy-50);color:var(--navy);font-size:1.6rem;line-height:1;cursor:pointer}
+.pay-sum{color:var(--text-soft);margin:0}
+.pay-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 18px}
+.pay-tabs button{padding:9px 16px;border-radius:99px;border:1.5px solid var(--line);background:#fff;font:600 .95rem var(--sans);color:var(--navy);cursor:pointer}
+.pay-tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.bank-dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;background:var(--navy-50);border-radius:12px;padding:16px;margin:0 0 12px}
+.bank-dl dt{font-weight:600;color:var(--text-soft)}.bank-dl dd{margin:0;font-weight:700;color:var(--navy);word-break:break-all}
+.pay-msg{min-height:1.4em;margin:14px 0 0;color:var(--navy)}.pay-msg.bad{color:var(--bad);font-weight:600}
+@media(max-width:900px){.apply-grid{grid-template-columns:1fr}.apply-pic{position:static;max-width:420px}.bank-dl{grid-template-columns:1fr}}
+/* ===== v7: uploaded logo and a more reliable apply-page photo ===== */
+.brand .logo{height:46px;width:auto;max-width:190px;object-fit:contain}
+.side .brand .logo{height:40px;background:#fff;padding:4px 8px;border-radius:8px}
+.glass-card .brand .logo{height:50px;background:rgba(255,255,255,.92);padding:5px 12px;border-radius:12px}
+.foot .brand .logo{height:50px;background:#fff;padding:6px 12px;border-radius:10px}
+.apply-pic .squircle.ap-glass{aspect-ratio:auto}
+.apply-pic .squircle.ap-photo{position:relative;height:auto;aspect-ratio:1}
+.ap-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}

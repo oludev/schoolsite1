@@ -7,7 +7,7 @@ $groups = [
   ['Admissions', 'admissions.php', ['admissions.php' => 'How to apply', 'apply.php' => 'Apply now']],
   ['News & media', 'news.php', ['news.php' => 'News and events', 'blog.php' => 'Blog', 'gallery.php' => 'Gallery']],
 ];
-$logo = is_file(__DIR__ . '/../assets/logo.png'); /* put your logo at assets/logo.png and it replaces the letter badge */
+$logo = site_logo(); /* upload it in Admin > Logo & images */
 $ico = fn($d) => '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $d . '</svg>';
 $phone = setting('phone', '+234 800 000 0000');
 ?><!DOCTYPE html>
@@ -15,6 +15,7 @@ $phone = setting('phone', '+234 800 000 0000');
 <title><?= e($title) ?> | <?= e($name) ?></title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<?php if ($logo): ?><link rel="icon" href="<?= e($logo) ?>"><?php endif; ?>
 <link rel="stylesheet" href="<?= url('assets/style.css') ?>"></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="utility"><div class="wrap">
@@ -24,7 +25,7 @@ $phone = setting('phone', '+234 800 000 0000');
   <span class="u-right"><a href="<?= url('login.php') ?>"><?= $ico('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>') ?>Log in</a></span>
 </div></div>
 <header class="top"><div class="wrap bar">
-  <a class="brand" href="<?= url('index.php') ?>"><?php if ($logo): ?><img class="logo" src="<?= url('assets/logo.png') ?>" alt="" height="46"><?php else: ?><span class="crest"><?= e(mb_substr($name, 0, 1)) ?></span><?php endif; ?><span class="b-txt"><b><?= e($name) ?></b><small><?= e(setting('motto', 'Knowledge, character and service.')) ?></small></span></a>
+  <a class="brand" href="<?= url('index.php') ?>"><?= brand_mark($name) ?><span class="b-txt"><b><?= e($name) ?></b><small><?= e(setting('motto', 'Knowledge, character and service.')) ?></small></span></a>
   <button class="burger" aria-label="Menu" onclick="document.body.classList.toggle('nav-open')">Menu</button>
   <nav class="mnav" aria-label="Main">
     <?php foreach ($groups as [$label, $href, $items]): ?>

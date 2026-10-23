@@ -48,7 +48,7 @@ $slides = [
   'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   'award' => '<circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/>'];
 $svg = fn($k, $n = 30) => '<svg viewBox="0 0 24 24" width="' . $n . '" height="' . $n . '" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $icons[$k] . '</svg>';
-$facts = [['book', (string)count(CLASSES), 'Classes, from Primary 1 to SS 3'], ['users', setting('stat_ratio', '1 : 20'), 'Teacher to pupil ratio'],
+$facts = [['book', (string)count(CLASSES), 'Classes, from Nursery 1 to SS 3'], ['users', setting('stat_ratio', '1'), 'Students'],
           ['clock', setting('stat_years', '25+'), 'Years of teaching'], ['award', setting('stat_pass', '98%'), 'Pass rate in external exams']]; ?>
 <script>document.documentElement.classList.add('js-reveal');</script>
 <section class="fx-band"><div class="wrap"><div class="fx-grid">

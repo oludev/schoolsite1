@@ -1,7 +1,7 @@
 </main>
 <?php $fname = setting('school_name', 'Wineridge Academy'); $fi = fn($d) => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $d . '</svg>'; ?>
 <footer class="foot"><div class="wrap fcols">
-  <div class="f-brand"><a class="brand" href="<?= url('index.php') ?>"><span class="crest"><?= e(mb_substr($fname, 0, 1)) ?></span><span class="b-txt"><b><?= e($fname) ?></b></span></a>
+  <div class="f-brand"><a class="brand" href="<?= url('index.php') ?>"><?= brand_mark($fname) ?><span class="b-txt"><b><?= e($fname) ?></b></span></a>
     <p><?= e(setting('motto', 'Knowledge, character and service.')) ?></p>
     <div class="f-line"><?= $fi('<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>') ?><span><?= e(setting('address', '12 School Road, Ikorodu, Lagos')) ?></span></div>
     <div class="f-line"><?= $fi('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>') ?><span><?= e(setting('phone', '+234 800 000 0000')) ?></span></div>

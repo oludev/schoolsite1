@@ -55,6 +55,9 @@ CREATE TABLE IF NOT EXISTS applications (
   child_name VARCHAR(120) NOT NULL, dob DATE NOT NULL, gender VARCHAR(10),
   section VARCHAR(20) NOT NULL, class_applied VARCHAR(40) NOT NULL, previous_school VARCHAR(150),
   parent_name VARCHAR(120) NOT NULL, phone VARCHAR(30) NOT NULL, email VARCHAR(120), address VARCHAR(250),
+  surname VARCHAR(80), first_name VARCHAR(80), other_names VARCHAR(80), nationality VARCHAR(60), state_origin VARCHAR(60), religion VARCHAR(40), previous_class VARCHAR(40),
+  blood_group VARCHAR(10), genotype VARCHAR(10), medical_notes VARCHAR(300), passport_photo VARCHAR(120), relationship VARCHAR(40), occupation VARCHAR(80), alt_phone VARCHAR(30),
+  emergency_name VARCHAR(120), emergency_phone VARCHAR(30), signature_img VARCHAR(120), signed_name VARCHAR(120), signed_on DATE NULL, payment_id INT NULL,
   status ENUM('New','Reviewing','Admitted','Declined') DEFAULT 'New',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -121,4 +124,16 @@ CREATE TABLE IF NOT EXISTS parent_children (
   parent_id INT NOT NULL, student_id INT NOT NULL, PRIMARY KEY (parent_id, student_id),
   FOREIGN KEY (parent_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS application_payments (
+  id INT AUTO_INCREMENT PRIMARY KEY, ref VARCHAR(24) NOT NULL UNIQUE,
+  parent_name VARCHAR(120) NOT NULL, email VARCHAR(120) NOT NULL, phone VARCHAR(30) NOT NULL,
+  amount DECIMAL(12,2) NOT NULL DEFAULT 0, method VARCHAR(30) NULL, provider_ref VARCHAR(80) NULL UNIQUE,
+  status ENUM('pending','awaiting','paid','failed') NOT NULL DEFAULT 'pending', bank_sender VARCHAR(120) NULL,
+  token CHAR(40) NULL UNIQUE, emailed TINYINT(1) NOT NULL DEFAULT 0, application_id INT NULL,
+  paid_at DATETIME NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS email_log (
+  id INT AUTO_INCREMENT PRIMARY KEY, to_email VARCHAR(120), subject VARCHAR(200), status VARCHAR(10), error VARCHAR(250),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

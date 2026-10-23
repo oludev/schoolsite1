@@ -1,0 +1,14 @@
+<?php require_once __DIR__ . '/includes/apply_lib.php';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_out(['ok' => false, 'error' => 'Invalid request.'], 405);
+if (!csrf_ok()) json_out(['ok' => false, 'error' => 'Your session expired. Please refresh the page.'], 419);
+$ref = trim($_POST['ref'] ?? ''); $p = payment_by_ref($ref);
+if (!$p || ($_SESSION['pay_ref'] ?? '') !== $ref) json_out(['ok' => false, 'error' => 'We could not find this payment.']);
+if ($p['status'] === 'paid') json_out(['ok' => true, 'token' => $p['token']]);
+$prov = $_POST['provider'] ?? '';
+if ($prov === 'paystack') [$ok, $why, $pr] = verify_paystack($ref, (float)$p['amount']);
+elseif ($prov === 'flutterwave') [$ok, $why, $pr] = verify_flutterwave($ref, trim($_POST['tx'] ?? ''), (float)$p['amount']);
+else json_out(['ok' => false, 'error' => 'Unknown payment method.']);
+if (!$ok) json_out(['ok' => false, 'error' => $why]);
+if (q('SELECT 1 FROM application_payments WHERE provider_ref=? AND id<>?', [$pr, $p['id']])->fetch()) json_out(['ok' => false, 'error' => 'This payment has already been used.']);
+$t = mark_paid((int)$p['id'], $prov, $pr); $_SESSION['apply_token'] = $t; audit('application_paid', $ref . ' via ' . $prov);
+json_out(['ok' => true, 'token' => $t]);

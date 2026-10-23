@@ -183,3 +183,19 @@ function link_children(int $pid, string $csv): int {
     }
     return $n;
 }
+
+/* images managed in Admin > Logo & images */
+function site_image(string $key, string $fallback = ''): string {
+    $f = basename(setting($key));
+    return ($f !== '' && is_file(__DIR__ . '/../uploads/' . $f)) ? url('uploads/' . $f) : $fallback;
+}
+function logo_path(): string {
+    $f = basename(setting('logo_file'));
+    if ($f !== '' && is_file(__DIR__ . '/../uploads/' . $f)) return 'uploads/' . $f;
+    return is_file(__DIR__ . '/../assets/logo.png') ? 'assets/logo.png' : '';
+}
+function site_logo(): string { $p = logo_path(); return $p ? url($p) : ''; }
+function brand_mark(string $name): string {
+    $l = site_logo();
+    return $l ? '<img class="logo" src="' . e($l) . '" alt="">' : '<span class="crest">' . e(mb_substr($name, 0, 1)) . '</span>';
+}

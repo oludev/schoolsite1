@@ -5,8 +5,9 @@ function app_top(string $title, array $menu, string $area): void {
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= e($title) ?> | <?= e($area) ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<?php if (site_logo()) echo '<link rel="icon" href="' . e(site_logo()) . '">'; ?>
 <link rel="stylesheet" href="<?= url('assets/style.css') ?>"></head><body>
-<div class="app"><aside class="side"><a class="brand" href="<?= url('index.php') ?>"><span class="crest"><?= e(mb_substr($name, 0, 1)) ?></span><span><?= e($area) ?></span></a>
+<div class="app"><aside class="side"><a class="brand" href="<?= url('index.php') ?>"><?= brand_mark($name) ?><span><?= e($area) ?></span></a>
 <?php foreach ($menu as $href => $label): ?><a href="<?= e($href) ?>" class="<?= $here === $href ? 'on' : '' ?>"><?= e($label) ?></a><?php endforeach; ?>
 <a href="<?= url('index.php') ?>">View website</a>
 <div class="who"><?= e($u['full_name']) ?><br><span class="mini" style="color:#D9A9B3"><?= e(ucfirst($u['role'])) ?></span><br><a href="logout.php" style="padding:0">Log out</a></div></aside>
@@ -33,11 +34,12 @@ function do_login(array $roles, $dest, string $heading, string $hint): void {
     $name = setting('school_name', 'Wineridge Academy'); ?>
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= e($heading) ?> | <?= e($name) ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<?php if (site_logo()) echo '<link rel="icon" href="' . e(site_logo()) . '">'; ?>
 <link rel="stylesheet" href="<?= url('assets/style.css') ?>"></head>
-<body class="login-bg" style="--bg:url('https://images.pexels.com/photos/5905569/pexels-photo-5905569.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920')">
+<body class="login-bg" style="--bg:url('<?= e(site_image('login_bg', 'https://images.pexels.com/photos/5905569/pexels-photo-5905569.jpeg?auto=compress&cs=tinysrgb&w=1920')) ?>')">
 <main class="lg">
   <div class="glass-card">
-    <a class="brand" href="<?= url('index.php') ?>"><span class="crest"><?= e(mb_substr($name, 0, 1)) ?></span><span><?= e($name) ?></span></a>
+    <a class="brand" href="<?= url('index.php') ?>"><?= brand_mark($name) ?><span><?= e($name) ?></span></a>
     <h1><?= e($heading) ?></h1><?= flash() ?>
     <?php if ($err) echo '<div class="note err">' . e($err) . '</div>'; ?>
     <form class="f" method="post"><?= csrf_field() ?>
@@ -79,6 +81,7 @@ function admin_topbar(): string {
             if (!can($perm)) return; $n = (int)q($sql)->fetchColumn();
             if ($n) { $items[] = [$n . ' ' . ($n === 1 ? $one : $many), $link]; $total += $n; }
         };
+        $add('applications', "SELECT COUNT(*) FROM application_payments WHERE status='awaiting'", 'bank transfer to confirm', 'bank transfers to confirm', 'payments.php');
         $add('applications', "SELECT COUNT(*) FROM applications WHERE status='New'", 'new application', 'new applications', 'applications.php');
         $add('content', 'SELECT COUNT(*) FROM messages WHERE is_read=0', 'unread message', 'unread messages', 'messages.php');
         $add('leave_admin', "SELECT COUNT(*) FROM leave_requests WHERE status='Pending'", 'leave request waiting', 'leave requests waiting', 'leave.php');

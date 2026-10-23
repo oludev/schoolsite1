@@ -35,3 +35,11 @@ Change every demo password. New accounts must choose their own password at first
 
 ## One login page
 Everyone signs in at `/login.php`. Admin, principal and HR go to the admin area. Teachers, students and parents go to the e-portal. Parent accounts are created under Accounts & roles and linked to their children by the children's usernames.
+
+## Application fee, payment window and application form
+1. Admin > Application payments: set the fee (0 = free), your bank account, and your Paystack and/or Flutterwave keys. Use test keys first.
+2. Add your email (SMTP) details on the same page and press Send test email. Confirmation emails go to parents after payment and after they submit the form. The Email log on that page shows any failure.
+3. Parents pay in a pop-up window on the Apply now page (bank transfer, Paystack card, Flutterwave, USSD). The server checks every online payment with Paystack or Flutterwave before it unlocks the form. Bank transfers are confirmed by you under Application payments.
+4. After payment the full form appears on the same page. Parents can download a blank copy, and a filled copy after they submit (Print / Save as PDF, or Word .doc).
+5. Requirements: PHP cURL enabled. On XAMPP for Windows, set curl.cainfo and openssl.cafile in php.ini to a CA bundle, or verification calls will fail with a certificate error.
+6. Passport photographs and signatures are stored in /uploads with random file names. Keep that folder out of search engines and back it up.
